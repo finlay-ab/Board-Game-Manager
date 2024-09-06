@@ -1,0 +1,15 @@
+{
+  "name": "board-game-manager",
+  "version": "1.0.0",
+  "description": "This project is designed to support the University of Nottingham (UON) Board Game Society by providing a comprehensive platform to manage their board game collection and facilitate a board game loaning system.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "Board-Game-Manager"
+  },
+  "author": "finlay-ab",
+  "license": "ISC"
+}
