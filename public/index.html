@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+    <title>Board Game Manager</title>
 
     <!-- update the version number as needed -->
     <script defer src="/__/firebase/10.13.1/firebase-app-compat.js"></script>
@@ -23,14 +23,33 @@
     -->
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
 
-   
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
   </head>
   <body>
-    <button onclick="googleLogin()"> 
 
-      Login with Google
+    <div class="jumbotron text-center">
+      <h1>Board Games</h1>
+      <p>A site to manage and loan board games</p>
+    </div>
 
-    </button>
+    <div class="well">
+      <button onclick="googleLogin()"> 
+        Login with Google
+      </button> 
+    </div>
+       
+    <div class="jumbotron text-center" style="margin-bottom: 0; bottom: 0 !important; position: absolute;">
+      <p><small> 
+        This website is currently in beta and under active development. You may encounter bugs, 
+        incomplete features, or unexpected behavior. We appreciate your understanding and 
+        welcome your feedback to help us improve. Thank you for your patience!
+      </small></p>
+    </div>
+
 
     <script src="app.js"></script> 
   </body>
