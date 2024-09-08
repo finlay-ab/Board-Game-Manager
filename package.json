@@ -11,5 +11,8 @@
     "url": "Board-Game-Manager"
   },
   "author": "finlay-ab",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@firebase/database": "^1.0.7"
+  }
 }
