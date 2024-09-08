@@ -30,3 +30,23 @@ function updatePost(e) {
     const myPost = db.collection('posts').doc('firstpost');
     myPost.update({title: e.target.value})
 }
+
+var database = firebase.database().ref().child('Tasks');
+database.once('value', function(snapshot){
+    if(snapshot.exists()){
+        var content = '';
+        var TaskTitle = snapshot.val().TaskTitle;
+        var JobId= snapshot.val().JobId;
+
+        snapshot.forEach(function(data){
+        });
+
+        content = '<tr>';
+        content += '<td>' + TaskTitle + '</td>'; //column1
+        content += '<td>' + JobId + '</td>';//column2
+        content += '</tr>';
+    }
+
+    $('#ex-table').append(content);
+    console.log(snapshot.val());
+});
