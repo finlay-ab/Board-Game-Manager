@@ -1,3 +1,5 @@
+
+/*
 document.addEventListener("DOMContentLoaded", event =>{
     const app = firebase.app;
 
@@ -30,23 +32,67 @@ function updatePost(e) {
     const myPost = db.collection('posts').doc('firstpost');
     myPost.update({title: e.target.value})
 }
+*/
 
-var database = firebase.database().ref().child('Tasks');
-database.once('value', function(snapshot){
-    if(snapshot.exists()){
-        var content = '';
-        var TaskTitle = snapshot.val().TaskTitle;
-        var JobId= snapshot.val().JobId;
 
-        snapshot.forEach(function(data){
-        });
 
-        content = '<tr>';
-        content += '<td>' + TaskTitle + '</td>'; //column1
-        content += '<td>' + JobId + '</td>';//column2
-        content += '</tr>';
-    }
+// Firebase configuration
 
-    $('#ex-table').append(content);
-    console.log(snapshot.val());
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyBoYD_z4F0uGi9VLq8ES4Nl_yB06LckNS8",
+    authDomain: "board-game-manager-14695.firebaseapp.com",
+    projectId: "board-game-manager-14695",
+    storageBucket: "board-game-manager-14695.appspot.com",
+    messagingSenderId: "1044140598020",
+    appId: "1:1044140598020:web:1480e227e87f088969a651",
+    measurementId: "G-EWJLJYC2FC"
+  }
+
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// Reference to the table body
+const tableBody = document.getElementById('boardGamesTable').getElementsByTagName('tbody')[0];
+
+// Function to render data
+function renderTable(doc) {
+    let row = tableBody.insertRow();
+    let name = row.insertCell(0);
+    let gameLength = row.insertCell(1);
+    let numberOfPlayers = row.insertCell(2);
+    let status = row.insertCell(3);
+    let location = row.insertCell(4);
+    let extension = row.insertCell(5);
+    let loanable = row.insertCell(6);
+
+
+    name.textContent = doc.data().name;
+    gameLength.textContent = doc.data().gameLength;
+    numberOfPlayers.textContent = doc.data().maxPlayers;
+    status.textContent = doc.data().status;
+    location.textContent = doc.data().location;
+    extension.textContent = doc.data().extension;
+    loanable.textContent = doc.data().loanable;
+}
+
+db.collection('Items').onSnapshot(snapshot => {
+    // Clear the table
+    tableBody.innerHTML = '';
+    snapshot.forEach(doc => {
+        renderTable(doc);
+    });
 });
