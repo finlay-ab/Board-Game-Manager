@@ -1,69 +1,6 @@
-
-/*
-document.addEventListener("DOMContentLoaded", event =>{
-    const app = firebase.app;
-
-    const db = firebase.firestore();
-    const myPost = db.collection('posts').doc('firstpost');
-
-    myPost.onSnapshot(doc => {
-        const data = doc.data();
-        document.querySelector('#title').innerHTML = data.title;
-    })
-
-
-});
-
-function googleLogin() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-
-    firebase.auth().signInWithPopup(provider)
-
-        .then(result => {
-            const user = result.user;
-            document.write('Hello ', user.displayName);
-            console.log(user)
-        })
-        .catch(console.log);
-}
-
-function updatePost(e) {
-    const db = firebase.firestore();
-    const myPost = db.collection('posts').doc('firstpost');
-    myPost.update({title: e.target.value})
-}
-*/
-
-
-
-// Firebase configuration
-
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyBoYD_z4F0uGi9VLq8ES4Nl_yB06LckNS8",
-    authDomain: "board-game-manager-14695.firebaseapp.com",
-    projectId: "board-game-manager-14695",
-    storageBucket: "board-game-manager-14695.appspot.com",
-    messagingSenderId: "1044140598020",
-    appId: "1:1044140598020:web:1480e227e87f088969a651",
-    measurementId: "G-EWJLJYC2FC"
-  }
-
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+// Import Firestore instance from common-init.js
+import { db } from './common-init.js';
+import { doc, collection, addDoc, deleteDoc, updateDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
 // Reference to the table body
 const tableBody = document.getElementById('boardGamesTable').getElementsByTagName('tbody')[0];
@@ -88,7 +25,7 @@ function renderTable(doc) {
     location.textContent = doc.data().location;
     extension.textContent = doc.data().extension;
     loanable.textContent = doc.data().loanable;
- 
+
     let editButton = document.createElement('button');
     editButton.id = 'edit-' + doc.id;
     editButton.className = 'btn btn-primary ms-3';
@@ -110,7 +47,6 @@ function renderTable(doc) {
     control.appendChild(deleteButton);
 
     document.getElementById("add-0").addEventListener("click", LoadModal);
-    
 }
 
 let modalCloseBtn = document.getElementById('modalCloseBtn');
@@ -138,16 +74,12 @@ const LoadModal = (event) => {
     actionBtn.removeEventListener('click', EditData);
     actionBtn.removeEventListener('click', DeleteData);
 
-
-    if(mode == 'add')
-    {
+    if (mode === 'add') {
         actionBtn.className = 'btn btn-lg btn-success';
         actionBtn.innerText = 'Add';
         actionModalLabel.innerText = 'Add new item';
-        
         actionBtn.addEventListener('click', AddData);
 
-        
         modName.value = "";
         modGameLength.value = "";
         modMaxPlayers.value = "";
@@ -163,18 +95,17 @@ const LoadModal = (event) => {
         modLocation.disabled = false;
         modExtension.disabled = false;
         modLoanable.disabled = false;
-    }else if(mode == 'edit')
-    {
+    } else if (mode === 'edit') {
         actionBtn.className = 'btn btn-lg btn-success';
         actionBtn.innerText = 'Save';
         actionModalLabel.innerText = 'Edit item';
         actionBtn.addEventListener('click', EditData);
 
-        const docRef = db.collection('Items').doc(selectedIndex);
+        const docRef = doc(db, 'Items', selectedIndex);
 
-        docRef.get().then((doc) => {
-            if (doc.exists) {
-                modName.value =  doc.data().name;
+        getDoc(docRef).then((doc) => {
+            if (doc.exists()) {
+                modName.value = doc.data().name;
                 modGameLength.value = doc.data().gameLength;
                 modMaxPlayers.value = doc.data().maxPlayers;
                 modStatus.value = doc.data().status;
@@ -195,48 +126,45 @@ const LoadModal = (event) => {
         modLocation.disabled = false;
         modExtension.disabled = false;
         modLoanable.disabled = false;
-    }
-    else if(mode == 'delete')
-        {
-            actionBtn.className = 'btn btn-lg btn-danger';
-            actionBtn.innerText = 'Delete';
-            actionModalLabel.innerText = 'Delete item';
-            actionBtn.addEventListener('click', DeleteData);
-    
-            const docRef = db.collection('Items').doc(selectedIndex);
+    } else if (mode === 'delete') {
+        actionBtn.className = 'btn btn-lg btn-danger';
+        actionBtn.innerText = 'Delete';
+        actionModalLabel.innerText = 'Delete item';
+        actionBtn.addEventListener('click', DeleteData);
 
-            docRef.get().then((doc) => {
-                if (doc.exists) {
-                    modName.value =  doc.data().name;
-                    modGameLength.value = doc.data().gameLength;
-                    modMaxPlayers.value = doc.data().maxPlayers;
-                    modStatus.value = doc.data().status;
-                    modLocation.value = doc.data().location;
-                    modExtension.value = doc.data().extension;
-                    modLoanable.value = doc.data().loanable;
-                } else {
-                    console.log("No such document!");
-                }
-            }).catch((error) => {
-                console.log("Error getting document:", error);
-            });
-    
-            modName.disabled = true;
-            modGameLength.disabled = true;
-            modMaxPlayers.disabled = true;
-            modStatus.disabled = true;
-            modLocation.disabled = true;
-            modExtension.disabled = true;
-            modLoanable.disabled = true;
-        }else
-        {
-            console.log(mode);
-        }
-}
+        const docRef = doc(db, 'Items', selectedIndex);
+
+        getDoc(docRef).then((doc) => {
+            if (doc.exists()) {
+                modName.value = doc.data().name;
+                modGameLength.value = doc.data().gameLength;
+                modMaxPlayers.value = doc.data().maxPlayers;
+                modStatus.value = doc.data().status;
+                modLocation.value = doc.data().location;
+                modExtension.value = doc.data().extension;
+                modLoanable.value = doc.data().loanable;
+            } else {
+                console.log("No such document!");
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+
+        modName.disabled = true;
+        modGameLength.disabled = true;
+        modMaxPlayers.disabled = true;
+        modStatus.disabled = true;
+        modLocation.disabled = true;
+        modExtension.disabled = true;
+        modLoanable.disabled = true;
+    } else {
+        console.log(mode);
+    }
+};
 
 const AddData = () => {
     console.log(modName.value);
-    db.collection('Items').add({
+    addDoc(collection(db, 'Items'), {
         name: modName.value,
         gameLength: modGameLength.value,
         maxPlayers: modMaxPlayers.value,
@@ -255,9 +183,9 @@ const AddData = () => {
 };
 
 const EditData = () => {
-    const docRef = db.collection('Items').doc(window.selectedIndex);
+    const docRef = doc(db, 'Items', window.selectedIndex);
 
-    docRef.update({
+    updateDoc(docRef, {
         name: modName.value,
         gameLength: modGameLength.value,
         maxPlayers: modMaxPlayers.value,
@@ -276,9 +204,9 @@ const EditData = () => {
 };
 
 const DeleteData = () => {
-    const docRef = db.collection('Items').doc(window.selectedIndex);
+    const docRef = doc(db, 'Items', window.selectedIndex);
 
-    docRef.delete().then(() => {
+    deleteDoc(docRef).then(() => {
         console.log("Document successfully deleted!");
         actionBtn.disabled = false;
         closeModal();
@@ -289,8 +217,7 @@ const DeleteData = () => {
     });
 };
 
-
-db.collection('Items').onSnapshot(snapshot => {
+onSnapshot(collection(db, 'Items'), (snapshot) => {
     // Clear the table
     tableBody.innerHTML = '';
     snapshot.forEach(doc => {
