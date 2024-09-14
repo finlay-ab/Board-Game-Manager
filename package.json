@@ -13,6 +13,7 @@
   "author": "finlay-ab",
   "license": "ISC",
   "dependencies": {
-    "@firebase/database": "^1.0.7"
+    "@firebase/database": "^1.0.7",
+    "firebase-admin": "^12.5.0"
   }
 }
