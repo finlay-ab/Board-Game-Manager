@@ -94,6 +94,7 @@ function renderTable(doc) {
     editButton.className = 'btn btn-primary ms-3';
     editButton.setAttribute('data-bs-toggle', 'modal');
     editButton.setAttribute('data-bs-target', '#actionModal');
+    editButton.addEventListener('click', LoadModal);
     editButton.textContent = 'Edit';
 
     control.appendChild(editButton);
@@ -103,16 +104,130 @@ function renderTable(doc) {
     deleteButton.className = 'btn btn-danger ms-3';
     deleteButton.setAttribute('data-bs-toggle', 'modal');
     deleteButton.setAttribute('data-bs-target', '#actionModal');
+    deleteButton.addEventListener('click', LoadModal);
     deleteButton.textContent = 'Delete';
 
     control.appendChild(deleteButton);
+
+    document.getElementById("add-0").addEventListener("click", LoadModal);
     
 }
 
 let modalCloseBtn = document.getElementById('modalCloseBtn');
-let actionLabel 
-let actionBtn = 
-let modal
+let actionModalLabel = document.getElementById('actionModalLabel');
+let actionBtn = document.getElementById('actionBtn');
+let modName = document.getElementById('modName');
+let modGameLength = document.getElementById('modGameLength');
+let modMaxPlayers = document.getElementById('modMaxPlayers');
+let modStatus = document.getElementById('modStatus');
+let modLocation = document.getElementById('modLocation');
+let modExtension = document.getElementById('modExtension');
+let modLoanable = document.getElementById('modLoanable');
+let addBtn = document.getElementById('add-0');
+
+const LoadModal = (event) => {
+    var targetId = (event.target.id.length > 1) ? event.target.id : event.target.parentElement.id;
+
+    let string = targetId.split('-');
+    let mode = string[0];
+    let selectedIndex = string[1];
+
+    actionBtn.disabled = true;
+
+    if(mode == 'add')
+    {
+        actionBtn.className = 'btn btn-lg btn-success';
+        actionBtn.innerText = 'Add';
+        actionModalLabel.innerText = 'Add new item';
+        actionBtn.addEventListener('click', Adddata());
+
+        
+        modName.value = "";
+        modGameLength.value = "";
+        modMaxPlayers.value = "";
+        modStatus.value = "";
+        modLocation.value = "";
+        modExtension.value = "";
+        modLoanable.value = "";
+
+        modName.disabled = false;
+        modGameLength.disabled = false;
+        modMaxPlayers.value.disabled = false;
+        modStatus.value.disabled = false;
+        modLocation.value.disabled = false;
+        modExtension.value.disabled = false;
+        modLoanable.value.disabled = false;
+    }else if(mode == 'edit')
+    {
+        actionBtn.className = 'btn btn-lg btn-success';
+        actionBtn.innerText = 'Save';
+        actionModalLabel.innerText = 'Edit item';
+        actionBtn.addEventListener('click', Adddata());
+
+        const docRef = db.collection('Items').doc(selectedIndex);
+
+        docRef.get().then((doc) => {
+            if (doc.exists) {
+                modName.value =  doc.data().name;
+                modGameLength.value = doc.data().gameLength;
+                modMaxPlayers.value = doc.data().maxPlayers;
+                modStatus.value = doc.data().status;
+                modLocation.value = doc.data().location;
+                modExtension.value = doc.data().extension;
+                modLoanable.value = doc.data().loanable;
+            } else {
+                console.log("No such document!");
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+
+        modName.disabled = false;
+        modGameLength.disabled = false;
+        modMaxPlayers.disabled = false;
+        modStatus.disabled = false;
+        modLocation.disabled = false;
+        modExtension.disabled = false;
+        modLoanable.disabled = false;
+    }
+    else if(mode == 'delete')
+        {
+            actionBtn.className = 'btn btn-lg btn-danger';
+            actionBtn.innerText = 'Delete';
+            actionModalLabel.innerText = 'Delete item';
+            actionBtn.addEventListener('click', Adddata());
+    
+            const docRef = db.collection('Items').doc(selectedIndex);
+
+            docRef.get().then((doc) => {
+                if (doc.exists) {
+                    modName.value =  doc.data().name;
+                    modGameLength.value = doc.data().gameLength;
+                    modMaxPlayers.value = doc.data().maxPlayers;
+                    modStatus.value = doc.data().status;
+                    modLocation.value = doc.data().location;
+                    modExtension.value = doc.data().extension;
+                    modLoanable.value = doc.data().loanable;
+                } else {
+                    console.log("No such document!");
+                }
+            }).catch((error) => {
+                console.log("Error getting document:", error);
+            });
+    
+            modName.disabled = true;
+            modGameLength.disabled = true;
+            modMaxPlayers.disabled = true;
+            modStatus.disabled = true;
+            modLocation.disabled = true;
+            modExtension.disabled = true;
+            modLoanable.disabled = true;
+        }else
+        {
+            console.log(mode);
+        }
+}
+
 
 db.collection('Items').onSnapshot(snapshot => {
     // Clear the table
