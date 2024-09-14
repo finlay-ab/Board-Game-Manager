@@ -73,9 +73,9 @@
 
       <Main class="flex-shrink-0">
         <hr>
-        <button class="btn btn-secondary ms-3" >Add more</button>
+        <button class="btn btn-secondary" >Add more</button>
         <!-- Code by w3codegenerator.com -->
-        <div class="table-responsive">
+        <div class="table-responsive mx-3">
           <table id="boardGamesTable" class="table  table-bordered table-striped table-hover table-sm">
           <thead class="table-primary">
             <tr>
@@ -86,7 +86,7 @@
                 <th>Location</th>
                 <th>Extension</th>
                 <th>Can be Loaned</th>
-                <th>Control Center<button class="btn btn-primary ms-3" >More</button><button class="btn btn-success ms-3"data-bs-toggle="modal" data-bs-target="#actionmodal" >Edit</button></th>
+                <th>Control Center<button class="btn btn-primary ms-3" >More</button><button class="btn btn-success ms-3"data-bs-toggle="modal" data-bs-target="#actionModal" id="add-0">Add</button></th>
               </tr>
             </thead>
             <tbody>
@@ -104,7 +104,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <h1 class="modal-title fs-5" id="actionModalLabel">Modal title</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="modalCloseBtn"></button>
               </div>
               <div class="modal-body">
 
@@ -139,7 +139,6 @@
 
 
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="button">Save changes</button>
               </div>
             </div>

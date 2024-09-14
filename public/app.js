@@ -79,6 +79,7 @@ function renderTable(doc) {
     let extension = row.insertCell(5);
     let loanable = row.insertCell(6);
 
+    let control = row.insertCell(7);
 
     name.textContent = doc.data().name;
     gameLength.textContent = doc.data().gameLength;
@@ -87,7 +88,31 @@ function renderTable(doc) {
     location.textContent = doc.data().location;
     extension.textContent = doc.data().extension;
     loanable.textContent = doc.data().loanable;
+ 
+    let editButton = document.createElement('button');
+    editButton.id = 'edit-' + doc.id;
+    editButton.className = 'btn btn-primary ms-3';
+    editButton.setAttribute('data-bs-toggle', 'modal');
+    editButton.setAttribute('data-bs-target', '#actionModal');
+    editButton.textContent = 'Edit';
+
+    control.appendChild(editButton);
+
+    let deleteButton = document.createElement('button');
+    deleteButton.id = 'delete-' + doc.id;
+    deleteButton.className = 'btn btn-danger ms-3';
+    deleteButton.setAttribute('data-bs-toggle', 'modal');
+    deleteButton.setAttribute('data-bs-target', '#actionModal');
+    deleteButton.textContent = 'Delete';
+
+    control.appendChild(deleteButton);
+    
 }
+
+let modalCloseBtn = document.getElementById('modalCloseBtn');
+let actionLabel 
+let actionBtn = 
+let modal
 
 db.collection('Items').onSnapshot(snapshot => {
     // Clear the table
