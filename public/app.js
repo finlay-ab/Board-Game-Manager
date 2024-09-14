@@ -131,15 +131,21 @@ const LoadModal = (event) => {
     let string = targetId.split('-');
     let mode = string[0];
     let selectedIndex = string[1];
+    window.selectedIndex = selectedIndex;
 
-    actionBtn.disabled = true;
+    // Remove any existing event listeners to avoid multiple calls
+    actionBtn.removeEventListener('click', AddData);
+    actionBtn.removeEventListener('click', EditData);
+    actionBtn.removeEventListener('click', DeleteData);
+
 
     if(mode == 'add')
     {
         actionBtn.className = 'btn btn-lg btn-success';
         actionBtn.innerText = 'Add';
         actionModalLabel.innerText = 'Add new item';
-        actionBtn.addEventListener('click', Adddata());
+        
+        actionBtn.addEventListener('click', AddData);
 
         
         modName.value = "";
@@ -152,17 +158,17 @@ const LoadModal = (event) => {
 
         modName.disabled = false;
         modGameLength.disabled = false;
-        modMaxPlayers.value.disabled = false;
-        modStatus.value.disabled = false;
-        modLocation.value.disabled = false;
-        modExtension.value.disabled = false;
-        modLoanable.value.disabled = false;
+        modMaxPlayers.disabled = false;
+        modStatus.disabled = false;
+        modLocation.disabled = false;
+        modExtension.disabled = false;
+        modLoanable.disabled = false;
     }else if(mode == 'edit')
     {
         actionBtn.className = 'btn btn-lg btn-success';
         actionBtn.innerText = 'Save';
         actionModalLabel.innerText = 'Edit item';
-        actionBtn.addEventListener('click', Adddata());
+        actionBtn.addEventListener('click', EditData);
 
         const docRef = db.collection('Items').doc(selectedIndex);
 
@@ -195,7 +201,7 @@ const LoadModal = (event) => {
             actionBtn.className = 'btn btn-lg btn-danger';
             actionBtn.innerText = 'Delete';
             actionModalLabel.innerText = 'Delete item';
-            actionBtn.addEventListener('click', Adddata());
+            actionBtn.addEventListener('click', DeleteData);
     
             const docRef = db.collection('Items').doc(selectedIndex);
 
@@ -227,6 +233,61 @@ const LoadModal = (event) => {
             console.log(mode);
         }
 }
+
+const AddData = () => {
+    console.log(modName.value);
+    db.collection('Items').add({
+        name: modName.value,
+        gameLength: modGameLength.value,
+        maxPlayers: modMaxPlayers.value,
+        status: modStatus.value,
+        location: modLocation.value,
+        extension: modExtension.value,
+        loanable: modLoanable.value
+    }).then(() => {
+        console.log("Document successfully written!");
+        actionBtn.disabled = false;
+        modalCloseBtn.click();
+    }).catch((error) => {
+        console.error("Error writing document: ", error);
+        actionBtn.disabled = false;
+    });
+};
+
+const EditData = () => {
+    const docRef = db.collection('Items').doc(window.selectedIndex);
+
+    docRef.update({
+        name: modName.value,
+        gameLength: modGameLength.value,
+        maxPlayers: modMaxPlayers.value,
+        status: modStatus.value,
+        location: modLocation.value,
+        extension: modExtension.value,
+        loanable: modLoanable.value
+    }).then(() => {
+        console.log("Document successfully updated!");
+        actionBtn.disabled = false;
+        modalCloseBtn.click();
+    }).catch((error) => {
+        console.error("Error updating document: ", error);
+        actionBtn.disabled = false;
+    });
+};
+
+const DeleteData = () => {
+    const docRef = db.collection('Items').doc(window.selectedIndex);
+
+    docRef.delete().then(() => {
+        console.log("Document successfully deleted!");
+        actionBtn.disabled = false;
+        closeModal();
+    }).catch((error) => {
+        console.error("Error deleting document: ", error);
+        actionBtn.disabled = false;
+        modalCloseBtn.click();
+    });
+};
 
 
 db.collection('Items').onSnapshot(snapshot => {
