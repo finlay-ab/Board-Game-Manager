@@ -1,4 +1,3 @@
-// User Authentication
 // Import the required functions from the Firebase SDK
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
 
