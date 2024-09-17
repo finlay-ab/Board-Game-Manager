@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Board Game Manager</title>
-
+    
     <script src="../js/loadScripts.js" defer></script>
     <script type="module" src="../js/common-init.js"></script>
   
@@ -29,7 +29,7 @@
                 <a class="nav-link" href="#">View All</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="authBtn"></a>
+                <a class="nav-link" id="authBtn">Sign In</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">About</a>
@@ -49,12 +49,11 @@
             <p>A site to manage and loan board games</p>  
           </div>
       </header>
-      
 
       <Main class="flex-shrink-0">
         <hr>
         <!-- Code by w3codegenerator.com -->
-        <div class="table-responsive">
+        <div class="table-responsive mx-3">
           <table id="boardGamesTable" class="table  table-bordered table-striped table-hover table-sm">
           <thead class="table-primary">
             <tr>
@@ -65,18 +64,64 @@
                 <th>Location</th>
                 <th>Extension</th>
                 <th>Can be Loaned</th>
+                <th id="controlCenter">Control Center<button class="btn btn-success ms-3"data-bs-toggle="modal" data-bs-target="#actionModal" id="add-0">Add</button></th>
               </tr>
             </thead>
             <tbody>
 
             </tbody>
-      </table>
-      </div>
+          </table>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="actionModal" tabindex="-1" aria-labelledby="actionModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="actionModalLabel"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="modalCloseBtn"></button>
+              </div>
+              <div class="modal-body">
+
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Name</label>
+                  <input type="email" class="form-control" id="modName">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Game length</label>
+                  <input type="email" class="form-control" id="modGameLength">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Max number of players</label>
+                  <input type="email" class="form-control" id="modMaxPlayers">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Status</label>
+                  <input type="email" class="form-control" id="modStatus">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Location</label>
+                  <input type="email" class="form-control" id="modLocation">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Extension</label>
+                  <input type="email" class="form-control" id="modExtension">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Can be Loaned</label>
+                  <input type="email" class="form-control" id="modLoanable">
+                </div>
+
+
+              <div class="modal-footer">
+                <button type="button" id="actionBtn"></button>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <hr>  
       </Main>
   
-    
     <footer class="footer mt-auto py-3 bg-light">
       <div class="container text-center">
         <span class="text-muted">This website is currently in beta and under active development. You may encounter bugs, 
