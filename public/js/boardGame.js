@@ -1,5 +1,6 @@
 // Import Firestore instance from common-init.js
 import { db } from './common-init.js';
+import { isAdmin } from './app.js';
 import { doc, collection, addDoc, deleteDoc, updateDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
 // Reference to the table body
@@ -45,8 +46,14 @@ function renderTable(doc) {
     deleteButton.textContent = 'Delete';
 
     control.appendChild(deleteButton);
-
     document.getElementById("add-0").addEventListener("click", LoadModal);
+
+    
+    if(isAdmin == false)
+    {
+        HideCC();
+    }
+
 }
 
 let modalCloseBtn = document.getElementById('modalCloseBtn');
@@ -224,3 +231,15 @@ onSnapshot(collection(db, 'Items'), (snapshot) => {
         renderTable(doc);
     });
 });
+
+function HideCC() {
+    const table = document.getElementById('boardGamesTable');
+    const rows = table.rows;
+
+    for (let i = 0; i < rows.length; i++) {
+        const cells = rows[i].cells;
+        if (cells.length > 7) {
+            cells[7].style.display = "none"; // Hide the 8th column
+        }
+    }
+}
