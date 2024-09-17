@@ -1,3 +1,4 @@
+// app.js
 // Import the required functions from the Firebase SDK
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
@@ -8,6 +9,8 @@ const provider = new GoogleAuthProvider();
 const db = getFirestore(); // Firestore instance
 
 const authBtn = document.getElementById('authBtn');
+
+export let isAdmin = false;
 
 // Function to check if the user is an admin
 const checkAdminStatus = async (uid) => {
@@ -32,13 +35,16 @@ const checkAdminStatus = async (uid) => {
 const updateAuthBtn = (user) => {
     if (user) {
         // Check if the user is an admin
-        checkAdminStatus(user.uid);
+        isAdmin = checkAdminStatus(user.uid);
         
         authBtn.textContent = 'Log Out';
         authBtn.onclick = () => signOut(auth);
+
+
     } else {
         authBtn.textContent = 'Log In';
         authBtn.onclick = () => signInWithPopup(auth, provider);
+
     }
 };
 
