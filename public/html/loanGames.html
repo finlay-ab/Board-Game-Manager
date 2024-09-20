@@ -82,8 +82,38 @@
                 </tbody>
               </table>
             </div>
-
+            <button class="btn btn-success ms-3"data-bs-toggle="modal" data-bs-target="#actionModal" id="add-0">Add</button>
             <button class="btn btn-success ms-3">Borrow Games</button>
+
+            <!-- Modal -->
+        <div class="modal fade" id="actionModal" tabindex="-1" aria-labelledby="actionModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="actionModalLabel">Borrow Games</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="modalCloseBtn"></button>
+              </div>
+              <div class="modal-body">
+
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Name</label>
+                  <input type="text" class="form-control" id="modName">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Extra notes</label>
+                  <input type="text" class="form-control" id="modNotes">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">games borrowing</label>
+                  <input type="text" disabled="true" class="form-control" id="modBorrowing">
+                </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-success ms-3" id="actionBtn">Submit Request</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
          <hr>  
       </Main>
