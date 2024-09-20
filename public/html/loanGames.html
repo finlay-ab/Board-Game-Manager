@@ -52,7 +52,38 @@
       <Main>
         <hr>
 
+            <!--
+                display a table with tick boxes
+                get list of ticked boxes
+                add name and other info
+                ensure all games can be loaned
+                send to server 
 
+                have page to read loan requests 
+                ensure that loan is valid otherwise flag it
+            -->
+
+            <div class="table-responsive mx-3">
+              <table id="boardGamesTable" class="table  table-bordered table-striped table-hover table-sm">
+              <thead class="table-primary">
+                <tr>
+                    <th>Borrow</th>
+                    <th>Name</th>
+                    <th>Game Length</th>
+                    <th>No. of Players</th>
+                    <th>Status</th>
+                    <th>Location</th>
+                    <th>Extension</th>
+                    <th>Can be Loaned</th>
+                  </tr>
+                </thead>
+                <tbody>
+    
+                </tbody>
+              </table>
+            </div>
+
+            <button class="btn btn-success ms-3">Borrow Games</button>
 
          <hr>  
       </Main>
@@ -67,5 +98,6 @@
     </footer>
 
     <script type="module" src="../js/app.js"></script> 
+    <script type="module" src="../js/loanGame.js"></script>
   </body>
 </html>
