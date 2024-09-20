@@ -46,6 +46,8 @@ function renderTable(doc) {
     extension.textContent = doc.data().extension;
     loanable.textContent = doc.data().loanable;
 
+    document.getElementById("borrowbtn").addEventListener("click", LoadModal);
+
 }
 
 const AddToBorrowList = (event) => {
@@ -66,6 +68,50 @@ const AddToBorrowList = (event) => {
     console.log(userBorrowList); // To see the current list
 };
 
+let modalCloseBtn = document.getElementById('modalCloseBtn');
+let actionModalLabel = document.getElementById('actionModalLabel');
+let actionBtn = document.getElementById('actionBtn');
+let modName = document.getElementById('modName');
+let modNotes = document.getElementById('modNotes');
+let modStartDate = document.getElementById('modStartDate');
+let modEndDate = document.getElementById('modEndDate');
+let modBorrowing = document.getElementById('modBorrowing');
+
+
+const LoadModal = (event) => {
+    actionBtn.className = 'btn btn-lg btn-success';
+    actionBtn.innerText = 'Add';
+    actionModalLabel.innerText = 'Add new item';
+    //actionBtn.addEventListener('click', AddData);
+
+    modName.value = "";
+    modNotes.value ="";
+    
+
+    modName.disabled = false;
+    modNotes.disabled = false;
+    modStartDate.disabled = false;
+    modEndDate.disabled = false;
+
+    modBorrowing.disabled = true;
+
+    userBorrowList.forEach(game => {
+        const docRef = doc(db, 'Items', game);
+        getDoc(docRef).then((doc) => {
+            if (doc.exists()) {
+                modBorrowing.value += doc.data().name + "\n";
+                console.log(doc.data().name);
+            } else {
+                console.log("No such document!");
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+    });
+    
+
+    
+};
 
 onSnapshot(collection(db, 'Items'), (snapshot) => {
     // Clear the table

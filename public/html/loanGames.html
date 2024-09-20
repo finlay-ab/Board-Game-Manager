@@ -82,8 +82,7 @@
                 </tbody>
               </table>
             </div>
-            <button class="btn btn-success ms-3"data-bs-toggle="modal" data-bs-target="#actionModal" id="add-0">Add</button>
-            <button class="btn btn-success ms-3">Borrow Games</button>
+            <button class="btn btn-success ms-3" data-bs-toggle="modal" data-bs-target="#actionModal" id="borrowbtn">Borrow Games</button>
 
             <!-- Modal -->
         <div class="modal fade" id="actionModal" tabindex="-1" aria-labelledby="actionModalLabel" aria-hidden="true">
@@ -105,15 +104,15 @@
                 </div>
                 <div class="mb-3">
                   <label for="exampleFormControlInput1" class="form-label">Start Date</label>
-                  <input type="date"  class="form-control" id="modBorrowing">
+                  <input type="date"  class="form-control" id="modStartDate">
                 </div>
                 <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="form-label">Start Date</label>
-                  <input type="date"  class="form-control" id="modBorrowing">
+                  <label for="exampleFormControlInput1" class="form-label">End Date</label>
+                  <input type="date"  class="form-control" id="modEndDate">
                 </div>
                 <div class="mb-3">
                   <label for="exampleFormControlInput1" class="form-label">games borrowing</label>
-                  <input type="text" disabled="true" class="form-control" id="modBorrowing">
+                  <textarea  type="textarea" disabled="true" class="form-control" id="modBorrowing"></textarea>
                 </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-success ms-3" id="actionBtn">Submit Request</button>
