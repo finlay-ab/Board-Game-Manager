@@ -1,7 +1,7 @@
 // Import Firestore instance from common-init.js
 import { db } from './common-init.js';
 import { isAdmin } from './app.js';
-import { doc, collection, addDoc, deleteDoc, updateDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+import { doc, collection, addDoc, deleteDoc, updateDoc, getDoc, onSnapshot, Timestamp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
 // Reference to the table body
 const tableBody = document.getElementById('boardGamesTable').getElementsByTagName('tbody')[0];
@@ -80,9 +80,9 @@ let modBorrowing = document.getElementById('modBorrowing');
 
 const LoadModal = (event) => {
     actionBtn.className = 'btn btn-lg btn-success';
-    actionBtn.innerText = 'Add';
-    actionModalLabel.innerText = 'Add new item';
-    //actionBtn.addEventListener('click', AddData);
+    actionBtn.innerText = 'Request';
+    actionModalLabel.innerText = 'Request loan';
+    actionBtn.addEventListener('click', AddData);
 
     modName.value = "";
     modNotes.value ="";
@@ -108,8 +108,43 @@ const LoadModal = (event) => {
             console.log("Error getting document:", error);
         });
     });
-    
 
+    
+};
+
+const AddData = () => {
+
+    const startDate = new Date(modStartDate.value);
+    const firebaseStartTimestamp = Timestamp.fromDate(startDate);
+
+    const endDate = new Date(modStartDate.value);
+    const firebaseEndTimestamp = Timestamp.fromDate(startDate);
+
+
+    //set to current time
+    const timeOfRequest = new Date(); 
+    const firebaseTimeOfRequest = Timestamp.fromDate(timeOfRequest);
+
+    const loanItems = userBorrowList.join(",");
+
+    addDoc(collection(db, 'Loans'), {
+        name: modName.value,
+        notes: modNotes.value,
+        endDate: firebaseStartTimestamp,
+        startDate: firebaseEndTimestamp,
+        loanItems: loanItems,
+        timeOfRequest: firebaseTimeOfRequest,
+        status: "pending"
+    }).then(() => {
+        console.log("Document successfully written!");
+        actionBtn.disabled = false;
+        modalCloseBtn.click();
+    }).catch((error) => {
+        console.error("Error writing document: ", error);
+        actionBtn.disabled = false;
+    });
+
+    
     
 };
 
