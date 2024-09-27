@@ -113,40 +113,48 @@ const LoadModal = (event) => {
 };
 
 const AddData = () => {
+    try {
+        const startDate = new Date(modStartDate.value);
+        const firebaseStartTimestamp = Timestamp.fromDate(startDate);
 
-    const startDate = new Date(modStartDate.value);
-    const firebaseStartTimestamp = Timestamp.fromDate(startDate);
+        const endDate = new Date(modEndDate.value);  // Use `modEndDate` for the end date
+        const firebaseEndTimestamp = Timestamp.fromDate(endDate);
 
-    const endDate = new Date(modStartDate.value);
-    const firebaseEndTimestamp = Timestamp.fromDate(startDate);
+        // Set to current time
+        const timeOfRequest = new Date(); 
+        const firebaseTimeOfRequest = Timestamp.fromDate(timeOfRequest);
 
+        const loanItems = userBorrowList.join(",");
 
-    //set to current time
-    const timeOfRequest = new Date(); 
-    const firebaseTimeOfRequest = Timestamp.fromDate(timeOfRequest);
+        addDoc(collection(db, 'Loans'), {
+            name: modName.value,
+            notes: modNotes.value,
+            startDate: firebaseStartTimestamp,
+            endDate: firebaseEndTimestamp,
+            loanItems: loanItems,
+            timeOfRequest: firebaseTimeOfRequest,
+            status: "pending"
+        })
+        .then(() => {
+            console.log("Document successfully written!");
+            actionBtn.disabled = false;
+        })
+        .catch((error) => {
+            console.error("Error writing document: ", error);
+            alert("Error: something went wrong. Please check your network and your date inputs!"); // Error message for user
+            actionBtn.disabled = false;
+        });
 
-    const loanItems = userBorrowList.join(",");
-
-    addDoc(collection(db, 'Loans'), {
-        name: modName.value,
-        notes: modNotes.value,
-        endDate: firebaseStartTimestamp,
-        startDate: firebaseEndTimestamp,
-        loanItems: loanItems,
-        timeOfRequest: firebaseTimeOfRequest,
-        status: "pending"
-    }).then(() => {
-        console.log("Document successfully written!");
-        actionBtn.disabled = false;
+        // Close the modal once data is added
         modalCloseBtn.click();
-    }).catch((error) => {
-        console.error("Error writing document: ", error);
-        actionBtn.disabled = false;
-    });
 
-    
-    
+    } catch (error) {
+        console.error("Error occurred: ", error);
+        alert("Error: something went wrong. Please check your network and your date inputs!"); // General catch-all error message
+        actionBtn.disabled = false;
+    }
 };
+
 
 onSnapshot(collection(db, 'Items'), (snapshot) => {
     // Clear the table
